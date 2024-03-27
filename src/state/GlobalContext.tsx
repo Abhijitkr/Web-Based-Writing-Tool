@@ -2,6 +2,7 @@ import { FC, ReactNode, createContext, useState } from "react";
 import {
   IBlock,
   ICreateBlock,
+  TBlockPosition,
   TBlockQuantity,
   TBlockType,
 } from "../types/@types.block";
@@ -12,17 +13,19 @@ export const GlobalContext = createContext<IGlobalContext | null>(null);
 const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [blockQuantity, setBlockQuantity] = useState<TBlockQuantity>("single");
   const [blockType, setBlockType] = useState<TBlockType>("text");
+  const [blockPosition, setBlockPosition] = useState<TBlockPosition>("above");
+  const [isPosition, setIsPosition] = useState<boolean>(false);
   const [multiple, setMultiple] = useState<number>(2);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [blocks, setBlocks] = useState<IBlock[]>([]);
 
-  const showModal = () => {
+  const showModal = (position: boolean) => {
     setIsModalOpen(true);
+    position ? setIsPosition(true) : setIsPosition(false);
   };
 
   const handleOk = (createBlock: ICreateBlock) => {
     setIsModalOpen(false);
-    console.log(createBlock);
 
     let n: number;
 
@@ -59,6 +62,9 @@ const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setBlockQuantity,
         setMultiple,
         setBlockType,
+        blockPosition,
+        setBlockPosition,
+        isPosition,
       }}
     >
       {children}

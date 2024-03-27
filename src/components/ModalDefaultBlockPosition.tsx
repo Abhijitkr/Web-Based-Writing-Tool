@@ -14,6 +14,9 @@ export const ModalDefaultBlockPosition: FC = () => {
     setBlockQuantity,
     setMultiple,
     setBlockType,
+    blockPosition,
+    setBlockPosition,
+    isPosition,
   } = useContext(GlobalContext) as IGlobalContext;
 
   return (
@@ -36,10 +39,19 @@ export const ModalDefaultBlockPosition: FC = () => {
       <Form
         layout="vertical"
         initialValues={{
+          blockPosition,
           blockQuantity,
           blockType,
         }}
       >
+        {isPosition && (
+          <Form.Item label="Insert Block:" name="blockPosition">
+            <Radio.Group onChange={(e) => setBlockPosition(e.target.value)}>
+              <Radio.Button value="above">Above</Radio.Button>
+              <Radio.Button value="below">Below</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+        )}
         <Form.Item label="Block Quality:" name="blockQuantity">
           <Radio.Group onChange={(e) => setBlockQuantity(e.target.value)}>
             <Radio.Button value="single">Single</Radio.Button>

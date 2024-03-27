@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import {
   IBlock,
   ICreateBlock,
+  TBlockPosition,
   TBlockQuantity,
   TBlockType,
 } from "../types/@types.block";
@@ -12,11 +13,14 @@ export interface IGlobalContext {
   setBlockQuantity: Dispatch<SetStateAction<TBlockQuantity>>;
   blockType: TBlockType;
   setBlockType: Dispatch<SetStateAction<TBlockType>>;
+  blockPosition: TBlockPosition;
+  setBlockPosition: Dispatch<SetStateAction<TBlockPosition>>;
+  isPosition: boolean;
+  setIsPosition?: Dispatch<SetStateAction<boolean>>;
   multiple: number;
   setMultiple: Dispatch<SetStateAction<number>>;
   isModalOpen: boolean;
-  showModal: () => void;
+  showModal: (position: boolean) => void;
   handleOk: (createBlock: ICreateBlock) => void;
   handleCancel: () => void;
 }
-

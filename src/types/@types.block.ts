@@ -1,8 +1,10 @@
 export type TBlockQuantity = "single" | "multiple";
 export type TBlockType = "text" | "picture";
+export type TBlockPosition = "above" | "below";
 
 export interface ICreateBlock {
   id?: number;
+  position?: TBlockPosition;
   type: TBlockType;
   quantity: TBlockQuantity;
   multiple: number;

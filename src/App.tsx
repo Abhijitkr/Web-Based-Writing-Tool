@@ -6,6 +6,7 @@ import { FooterComponent } from "./components/FooterComponent";
 import { GlobalContext } from "./state/GlobalContext";
 import { IGlobalContext } from "./types/@types.globalContextType";
 import { ModalDefaultBlockPosition } from "./components/ModalDefaultBlockPosition";
+import { MdAddToPhotos, MdDragIndicator } from "react-icons/md";
 
 const App: React.FC = () => {
   const { blocks, showModal } = useContext(GlobalContext) as IGlobalContext;
@@ -20,7 +21,7 @@ const App: React.FC = () => {
             <Flex justify="end">
               <Button
                 className="text-white bg-black hover:text-white"
-                onClick={showModal}
+                onClick={() => showModal(false)}
               >
                 Add Block
               </Button>
@@ -31,7 +32,12 @@ const App: React.FC = () => {
               <Card
                 key={block.id}
                 title={block.title}
-                extra={<a href="#">More</a>}
+                extra={
+                  <Flex align="center" gap={30} className="cursor-pointer">
+                    <MdAddToPhotos size="25" onClick={() => showModal(true)} />
+                    <MdDragIndicator size="25" />
+                  </Flex>
+                }
                 className="my-5 shadow-md"
               >
                 {block.description}
@@ -42,7 +48,7 @@ const App: React.FC = () => {
           <Flex align="center" justify="center" className="h-full">
             <Button
               className="h-20 w-40 text-white bg-black text-xl  hover:text-white"
-              onClick={showModal}
+              onClick={() => showModal(false)}
             >
               Add Block
             </Button>
