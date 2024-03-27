@@ -15,9 +15,10 @@ type TBlockQuantity = "single" | "multiple";
 type TBlockType = "text" | "picture";
 
 interface ICreateBlock {
-  id: number;
+  id?: number;
   type: TBlockType;
   quantity: TBlockQuantity;
+  multiple: number;
 }
 
 interface IBlock {
@@ -30,7 +31,8 @@ interface IBlock {
 const App: React.FC = () => {
   const [blockQuantity, setBlockQuantity] = useState<TBlockQuantity>("single");
   const [blockType, setBlockType] = useState<TBlockType>("text");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [multiple, setMultiple] = useState<number>(2);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [blocks, setBlocks] = useState<IBlock[]>([]);
 
   const showModal = () => {
@@ -40,15 +42,22 @@ const App: React.FC = () => {
   const handleOk = (createBlock: ICreateBlock) => {
     setIsModalOpen(false);
     console.log(createBlock);
-    setBlocks([
-      ...blocks,
-      {
-        id: createBlock.id,
-        type: createBlock.type,
-        title: "Your Card Title",
-        description: "Your Card Description",
-      },
-    ]);
+
+    let n: number;
+
+    createBlock.quantity === "multiple" ? (n = createBlock.multiple) : (n = 1);
+
+    for (let i = 0; i < n; i++) {
+      setBlocks((prevBlocks) => [
+        ...prevBlocks,
+        {
+          id: Math.random() + 1000,
+          type: createBlock.type,
+          title: "Your Card Title",
+          description: "Your Card Description",
+        },
+      ]);
+    }
   };
   console.log(blocks);
 
@@ -76,9 +85,9 @@ const App: React.FC = () => {
                 open={isModalOpen}
                 onOk={() =>
                   handleOk({
-                    id: Math.random() + 1000,
                     type: blockType,
                     quantity: blockQuantity,
+                    multiple: multiple,
                   })
                 }
                 onCancel={handleCancel}
@@ -89,7 +98,10 @@ const App: React.FC = () => {
               >
                 <Form
                   layout="vertical"
-                  initialValues={{ blockQuantity: "single", blockType: "text" }}
+                  initialValues={{
+                    blockQuantity: blockQuantity,
+                    blockType: "text",
+                  }}
                 >
                   <Form.Item label="Block Quality:" name="blockQuantity">
                     <Radio.Group
@@ -100,9 +112,11 @@ const App: React.FC = () => {
                       {blockQuantity === "multiple" ? (
                         <InputNumber
                           type="number"
-                          min="2"
+                          min={2}
                           className="ml-2"
                           style={{ boxShadow: "none" }}
+                          value={multiple!}
+                          onChange={(val) => setMultiple(val as number)}
                         />
                       ) : null}
                     </Radio.Group>
@@ -141,9 +155,9 @@ const App: React.FC = () => {
               open={isModalOpen}
               onOk={() =>
                 handleOk({
-                  id: Math.random() + 1000,
                   type: blockType,
                   quantity: blockQuantity,
+                  multiple: multiple,
                 })
               }
               onCancel={handleCancel}
@@ -165,9 +179,11 @@ const App: React.FC = () => {
                     {blockQuantity === "multiple" ? (
                       <InputNumber
                         type="number"
-                        min="2"
+                        min={2}
                         className="ml-2"
                         style={{ boxShadow: "none" }}
+                        value={multiple!}
+                        onChange={(val) => setMultiple(val as number)}
                       />
                     ) : null}
                   </Radio.Group>
