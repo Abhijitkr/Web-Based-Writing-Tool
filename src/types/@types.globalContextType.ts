@@ -9,6 +9,7 @@ import {
 
 export interface IGlobalContext {
   blocks: IBlock[];
+  setBlocks: Dispatch<SetStateAction<IBlock[]>>;
   blockQuantity: TBlockQuantity;
   setBlockQuantity: Dispatch<SetStateAction<TBlockQuantity>>;
   blockType: TBlockType;

@@ -6,12 +6,14 @@ import { FooterComponent } from "./components/FooterComponent";
 import { GlobalContext } from "./state/GlobalContext";
 import { IGlobalContext } from "./types/@types.globalContextType";
 import { ModalDefaultBlockPosition } from "./components/ModalDefaultBlockPosition";
-import { MdAddToPhotos, MdDragIndicator } from "react-icons/md";
+import { MdAddToPhotos } from "react-icons/md";
+import { Reorder } from "framer-motion";
 
 const App: React.FC = () => {
-  const { blocks, showModal, setSelectedBlock } = useContext(
+  const { blocks, setBlocks, showModal, setSelectedBlock } = useContext(
     GlobalContext
   ) as IGlobalContext;
+  // const dragControls = useDragControls();
 
   return (
     <Layout className="h-screen">
@@ -30,27 +32,40 @@ const App: React.FC = () => {
               <ModalDefaultBlockPosition />
             </Flex>
 
-            {blocks.map((block, index) => (
-              <Card
-                key={block.id}
-                title={block.title}
-                extra={
-                  <Flex align="center" gap={30} className="cursor-pointer">
-                    <MdAddToPhotos
-                      size="25"
-                      onClick={() => {
-                        setSelectedBlock(index);
-                        showModal(true);
-                      }}
-                    />
-                    <MdDragIndicator size="25" />
-                  </Flex>
-                }
-                className="my-5 shadow-md"
-              >
-                {block.description} {block.type}
-              </Card>
-            ))}
+            <Reorder.Group values={blocks} onReorder={setBlocks}>
+              {blocks.map((block, index) => (
+                <Reorder.Item
+                  value={block}
+                  key={block.id}
+                  // dragListener={false}
+                  // dragControls={dragControls}
+                >
+                  <Card
+                    key={block.id}
+                    title={block.title}
+                    extra={
+                      <Flex align="center" gap={30} className="cursor-pointer">
+                        <MdAddToPhotos
+                          size="25"
+                          onClick={() => {
+                            setSelectedBlock(index);
+                            showModal(true);
+                          }}
+                        />
+                        {/* <MdDragIndicator
+                          size="25"
+                          onPointerDown={(event) => dragControls.start(event)}
+                          className="cursor-grab"
+                        /> */}
+                      </Flex>
+                    }
+                    className="my-5 shadow-md cursor-grab active:cursor-grabbing"
+                  >
+                    {block.description} {block.type}
+                  </Card>
+                </Reorder.Item>
+              ))}
+            </Reorder.Group>
           </div>
         ) : (
           <Flex align="center" justify="center" className="h-full">

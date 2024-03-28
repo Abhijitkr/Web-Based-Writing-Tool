@@ -65,6 +65,7 @@ const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
     <GlobalContext.Provider
       value={{
         blocks,
+        setBlocks,
         showModal,
         isModalOpen,
         handleOk,
