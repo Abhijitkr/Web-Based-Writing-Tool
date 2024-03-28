@@ -18,6 +18,7 @@ const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [multiple, setMultiple] = useState<number>(2);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [blocks, setBlocks] = useState<IBlock[]>([]);
+  const [selectedBlock, setSelectedBlock] = useState<number | null>(null);
 
   const showModal = (position: boolean) => {
     setIsModalOpen(true);
@@ -31,17 +32,29 @@ const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     createBlock.quantity === "multiple" ? (n = createBlock.multiple) : (n = 1);
 
+    const newBlocks = [...blocks];
+
     for (let i = 0; i < n; i++) {
-      setBlocks((prevBlocks) => [
-        ...prevBlocks,
-        {
-          id: Math.random() + 1000,
-          type: createBlock.type,
-          title: "Your Card Title",
-          description: "Your Card Description",
-        },
-      ]);
+      const newBlock: IBlock = {
+        id: Math.random() + 1000,
+        type: createBlock.type,
+        title: "Your Card Title",
+        description: "Your Card Description",
+      };
+
+      if (blockPosition === "above" && typeof selectedBlock === "number") {
+        newBlocks.splice(selectedBlock, 0, newBlock);
+      } else if (
+        blockPosition === "below" &&
+        typeof selectedBlock === "number"
+      ) {
+        newBlocks.splice(selectedBlock + 1, 0, newBlock);
+      } else {
+        newBlocks.push(newBlock);
+      }
     }
+    setBlocks(newBlocks);
+    setSelectedBlock(null);
   };
 
   const handleCancel = () => {
@@ -65,6 +78,7 @@ const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
         blockPosition,
         setBlockPosition,
         isPosition,
+        setSelectedBlock,
       }}
     >
       {children}

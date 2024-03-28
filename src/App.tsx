@@ -9,7 +9,9 @@ import { ModalDefaultBlockPosition } from "./components/ModalDefaultBlockPositio
 import { MdAddToPhotos, MdDragIndicator } from "react-icons/md";
 
 const App: React.FC = () => {
-  const { blocks, showModal } = useContext(GlobalContext) as IGlobalContext;
+  const { blocks, showModal, setSelectedBlock } = useContext(
+    GlobalContext
+  ) as IGlobalContext;
 
   return (
     <Layout className="h-screen">
@@ -28,19 +30,25 @@ const App: React.FC = () => {
               <ModalDefaultBlockPosition />
             </Flex>
 
-            {blocks.map((block) => (
+            {blocks.map((block, index) => (
               <Card
                 key={block.id}
                 title={block.title}
                 extra={
                   <Flex align="center" gap={30} className="cursor-pointer">
-                    <MdAddToPhotos size="25" onClick={() => showModal(true)} />
+                    <MdAddToPhotos
+                      size="25"
+                      onClick={() => {
+                        setSelectedBlock(index);
+                        showModal(true);
+                      }}
+                    />
                     <MdDragIndicator size="25" />
                   </Flex>
                 }
                 className="my-5 shadow-md"
               >
-                {block.description}
+                {block.description} {block.type}
               </Card>
             ))}
           </div>
