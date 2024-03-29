@@ -72,7 +72,7 @@ export const PictureBlock = ({
             onClick={() => setEditingTitle(true)}
             className="cursor-pointer"
           >
-            {block.title}
+            {block.title === "" ? "Enter title..." : block.title}
           </span>
         )
       }

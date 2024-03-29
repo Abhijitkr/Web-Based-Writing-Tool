@@ -45,14 +45,14 @@ export const TextBlock = ({
             onBlur={() => setEditingTitle(false)}
             onPressEnter={() => setEditingTitle(false)}
             className="border p-2"
-            placeholder="Enter title"
+            placeholder="Enter title..."
           />
         ) : (
           <span
             onClick={() => setEditingTitle(true)}
             className="cursor-pointer"
           >
-            {block.title}
+            {block.title === "" ? "Enter title..." : block.title}
           </span>
         )
       }
@@ -81,14 +81,17 @@ export const TextBlock = ({
           onBlur={() => setEditingDescription(false)}
           onPressEnter={() => setEditingDescription(false)}
           className="border p-2"
-          placeholder="Enter description"
+          placeholder="Enter description..."
+          rows={2}
         />
       ) : (
         <span
           onClick={() => setEditingDescription(true)}
           className="cursor-pointer"
         >
-          {block.description}
+          {block.description === ""
+            ? "Enter description..."
+            : block.description}
         </span>
       )}
     </Card>
