@@ -43,6 +43,7 @@ export const ModalDefaultBlockPosition: FC = () => {
           blockQuantity,
           blockType,
         }}
+        className="select-none"
       >
         {isPosition && (
           <Form.Item label="Insert Block:" name="blockPosition">

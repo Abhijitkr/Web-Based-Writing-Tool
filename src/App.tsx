@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Layout } from "antd";
+import { Button, Flex, Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { useContext } from "react";
 import { HeaderComponent } from "./components/HeaderComponent";
@@ -6,11 +6,13 @@ import { FooterComponent } from "./components/FooterComponent";
 import { GlobalContext } from "./state/GlobalContext";
 import { IGlobalContext } from "./types/@types.globalContextType";
 import { ModalDefaultBlockPosition } from "./components/ModalDefaultBlockPosition";
-import { MdAddToPhotos } from "react-icons/md";
 import { Reorder } from "framer-motion";
+import { PictureBlock } from "./components/PictureBlock";
+import { IBlock } from "./types/@types.block";
+import { TextBlock } from "./components/TextBlock";
 
 const App: React.FC = () => {
-  const { blocks, setBlocks, showModal, setSelectedBlock } = useContext(
+  const { blocks, setBlocks, showModal } = useContext(
     GlobalContext
   ) as IGlobalContext;
   // const dragControls = useDragControls();
@@ -33,36 +35,18 @@ const App: React.FC = () => {
             </Flex>
 
             <Reorder.Group values={blocks} onReorder={setBlocks}>
-              {blocks.map((block, index) => (
+              {blocks.map((block: IBlock, index: number) => (
                 <Reorder.Item
                   value={block}
                   key={block.id}
                   // dragListener={false}
                   // dragControls={dragControls}
                 >
-                  <Card
-                    key={block.id}
-                    title={block.title}
-                    extra={
-                      <Flex align="center" gap={30} className="cursor-pointer">
-                        <MdAddToPhotos
-                          size="25"
-                          onClick={() => {
-                            setSelectedBlock(index);
-                            showModal(true);
-                          }}
-                        />
-                        {/* <MdDragIndicator
-                          size="25"
-                          onPointerDown={(event) => dragControls.start(event)}
-                          className="cursor-grab"
-                        /> */}
-                      </Flex>
-                    }
-                    className="my-5 shadow-md cursor-grab active:cursor-grabbing"
-                  >
-                    {block.description} {block.type}
-                  </Card>
+                  {block.type === "picture" ? (
+                    <PictureBlock block={block} index={index} />
+                  ) : (
+                    <TextBlock block={block} index={index} />
+                  )}
                 </Reorder.Item>
               ))}
             </Reorder.Group>
