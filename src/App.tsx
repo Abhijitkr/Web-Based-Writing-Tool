@@ -15,7 +15,6 @@ const App: React.FC = () => {
   const { blocks, setBlocks, showModal } = useContext(
     GlobalContext
   ) as IGlobalContext;
-  // const dragControls = useDragControls();
 
   return (
     <Layout className="h-screen">
@@ -34,21 +33,14 @@ const App: React.FC = () => {
               <ModalDefaultBlockPosition />
             </Flex>
 
-            <Reorder.Group values={blocks} onReorder={setBlocks}>
-              {blocks.map((block: IBlock, index: number) => (
-                <Reorder.Item
-                  value={block}
-                  key={block.id}
-                  // dragListener={false}
-                  // dragControls={dragControls}
-                >
-                  {block.type === "picture" ? (
-                    <PictureBlock block={block} index={index} />
-                  ) : (
-                    <TextBlock block={block} index={index} />
-                  )}
-                </Reorder.Item>
-              ))}
+            <Reorder.Group axis="y" values={blocks} onReorder={setBlocks}>
+              {blocks.map((block: IBlock, index: number) =>
+                block.type === "picture" ? (
+                  <PictureBlock block={block} index={index} key={block.id} />
+                ) : (
+                  <TextBlock block={block} index={index} key={block.id} />
+                )
+              )}
             </Reorder.Group>
           </div>
         ) : (
