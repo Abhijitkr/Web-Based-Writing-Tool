@@ -17,6 +17,12 @@ import { IBlock } from "../types/@types.block";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
+interface IPreview {
+  visible: boolean;
+  image: string | undefined;
+  name: string | undefined;
+}
+
 export const PictureBlock = ({
   block,
   index,
@@ -24,15 +30,11 @@ export const PictureBlock = ({
   block: IBlock;
   index: number;
 }) => {
-  const { showModal, setSelectedBlock, blocks, setBlocks } = useContext(
+  const { showModal, setSelectedBlock, handleTitleChange } = useContext(
     GlobalContext
   ) as IGlobalContext;
 
-  const [previewVisible, setPreviewVisible] = useState<boolean>(false);
-  const [previewImage, setPreviewImage] = useState<string | undefined>(
-    undefined
-  );
-  const [previewName, setPreviewName] = useState<string | undefined>(undefined);
+  const [preview, setPreview] = useState<IPreview | null>(null);
   const [editingTitle, setEditingTitle] = useState<boolean>(false);
 
   const onPreview = async (file: UploadFile) => {
@@ -44,19 +46,12 @@ export const PictureBlock = ({
         reader.onload = () => resolve(reader.result as string);
       });
     }
-    setPreviewImage(src);
-    setPreviewName(file.name);
-    setPreviewVisible(true);
-  };
 
-  const handleTitleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    const updatedBlocks = blocks.map((blk) =>
-      blk.id === id ? { ...blk, title: e.target.value } : blk
-    );
-    setBlocks(updatedBlocks);
+    setPreview({
+      visible: true,
+      image: src,
+      name: file.name,
+    });
   };
 
   return (
@@ -70,6 +65,7 @@ export const PictureBlock = ({
             onBlur={() => setEditingTitle(false)}
             onPressEnter={() => setEditingTitle(false)}
             className="border p-2"
+            placeholder="Enter title"
           />
         ) : (
           <span
@@ -115,12 +111,16 @@ export const PictureBlock = ({
         </p>
       </Upload>
       <Modal
-        open={previewVisible}
-        onCancel={() => setPreviewVisible(false)}
+        open={preview?.visible}
+        onCancel={() => {
+          if (preview) {
+            setPreview({ ...preview, visible: false });
+          }
+        }}
         footer={null}
-        title={previewName}
+        title={preview?.name}
       >
-        <img alt="Preview" className="w-full" src={previewImage} />
+        <img alt="Preview" className="w-full" src={preview?.image} />
       </Modal>
     </Card>
   );

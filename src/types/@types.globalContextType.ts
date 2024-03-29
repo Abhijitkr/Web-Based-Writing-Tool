@@ -26,4 +26,8 @@ export interface IGlobalContext {
   showModal: (position: boolean) => void;
   handleOk: (createBlock: ICreateBlock) => void;
   handleCancel: () => void;
+  handleTitleChange: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: number
+  ) => void;
 }

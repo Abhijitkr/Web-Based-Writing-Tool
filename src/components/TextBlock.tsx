@@ -1,9 +1,9 @@
-import { Card, Flex } from "antd";
+import { Card, Flex, Input } from "antd";
 import { MdAddToPhotos } from "react-icons/md";
 import { IBlock } from "../types/@types.block";
 import { IGlobalContext } from "../types/@types.globalContextType";
 import { GlobalContext } from "../state/GlobalContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 export const TextBlock = ({
   block,
@@ -12,13 +12,50 @@ export const TextBlock = ({
   block: IBlock;
   index: number;
 }) => {
-  const { showModal, setSelectedBlock } = useContext(
-    GlobalContext
-  ) as IGlobalContext;
+  const { blocks, setBlocks, showModal, setSelectedBlock, handleTitleChange } =
+    useContext(GlobalContext) as IGlobalContext;
+  const [editingTitle, setEditingTitle] = useState<boolean>(false);
+  const [editingDescription, setEditingDescription] = useState<boolean>(false);
+
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+    blockId: number
+  ) => {
+    const newDescription = e.target.value;
+    const updatedBlocks = blocks.map((block) => {
+      if (block.id === blockId) {
+        return {
+          ...block,
+          description: newDescription,
+        };
+      }
+      return block;
+    });
+    setBlocks(updatedBlocks);
+  };
+
   return (
     <Card
       key={block.id}
-      title={block.title}
+      title={
+        editingTitle ? (
+          <Input
+            value={block.title}
+            onChange={(e) => handleTitleChange(e, block.id)}
+            onBlur={() => setEditingTitle(false)}
+            onPressEnter={() => setEditingTitle(false)}
+            className="border p-2"
+            placeholder="Enter title"
+          />
+        ) : (
+          <span
+            onClick={() => setEditingTitle(true)}
+            className="cursor-pointer"
+          >
+            {block.title}
+          </span>
+        )
+      }
       extra={
         <Flex align="center" gap={30} className="cursor-pointer">
           <MdAddToPhotos
@@ -37,7 +74,23 @@ export const TextBlock = ({
       }
       className="my-5 shadow-md cursor-grab active:cursor-grabbing"
     >
-      {block.description} {block.type}
+      {editingDescription ? (
+        <Input.TextArea
+          value={block.description}
+          onChange={(e) => handleDescriptionChange(e, block.id)}
+          onBlur={() => setEditingDescription(false)}
+          onPressEnter={() => setEditingDescription(false)}
+          className="border p-2"
+          placeholder="Enter description"
+        />
+      ) : (
+        <span
+          onClick={() => setEditingDescription(true)}
+          className="cursor-pointer"
+        >
+          {block.description}
+        </span>
+      )}
     </Card>
   );
 };
