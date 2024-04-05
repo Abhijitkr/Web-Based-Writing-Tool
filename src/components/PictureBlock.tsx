@@ -2,7 +2,6 @@ import {
   Card,
   Flex,
   GetProp,
-  Input,
   Modal,
   Upload,
   UploadFile,
@@ -15,6 +14,7 @@ import { GlobalContext } from "../state/GlobalContext";
 import { IGlobalContext } from "../types/@types.globalContextType";
 import { IBlock } from "../types/@types.block";
 import { Reorder, useDragControls } from "framer-motion";
+import { TipTapTitle } from "./TipTapTitle";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
@@ -31,12 +31,11 @@ export const PictureBlock = ({
   block: IBlock;
   index: number;
 }) => {
-  const { showModal, setSelectedBlock, handleTitleChange } = useContext(
+  const { showModal, setSelectedBlock } = useContext(
     GlobalContext
   ) as IGlobalContext;
 
   const [preview, setPreview] = useState<IPreview | null>(null);
-  const [editingTitle, setEditingTitle] = useState<boolean>(false);
 
   const dragControls = useDragControls();
 
@@ -65,25 +64,7 @@ export const PictureBlock = ({
     >
       <Card
         key={block.id}
-        title={
-          editingTitle ? (
-            <Input
-              defaultValue={block.title}
-              onChange={(e) => handleTitleChange(e, block.id)}
-              onBlur={() => setEditingTitle(false)}
-              onPressEnter={() => setEditingTitle(false)}
-              className="border p-2"
-              placeholder="Enter title"
-            />
-          ) : (
-            <span
-              onClick={() => setEditingTitle(true)}
-              className="cursor-pointer"
-            >
-              {block.title === "" ? "Enter title..." : block.title}
-            </span>
-          )
-        }
+        title={<TipTapTitle block={block} />}
         extra={
           <Flex align="center" gap={30} className="cursor-pointer">
             <MdAddToPhotos

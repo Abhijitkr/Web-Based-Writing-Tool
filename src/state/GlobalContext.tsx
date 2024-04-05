@@ -61,16 +61,6 @@ const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setIsModalOpen(false);
   };
 
-  const handleTitleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    const updatedBlocks = blocks.map((blk) =>
-      blk.id === id ? { ...blk, title: e.target.value } : blk
-    );
-    setBlocks(updatedBlocks);
-  };
-
   return (
     <GlobalContext.Provider
       value={{
@@ -90,7 +80,6 @@ const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setBlockPosition,
         isPosition,
         setSelectedBlock,
-        handleTitleChange,
       }}
     >
       {children}

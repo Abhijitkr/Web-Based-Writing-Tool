@@ -1,21 +1,29 @@
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { IBlock } from "../types/@types.block";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { BiBold, BiCodeAlt, BiItalic, BiUnderline } from "react-icons/bi";
 import Underline from "@tiptap/extension-underline";
 import { Flex } from "antd";
+import { IGlobalContext } from "../types/@types.globalContextType";
+import { GlobalContext } from "../state/GlobalContext";
 
-export const TipTap = ({ block }: { block: IBlock }) => {
-  const maxWords = 250;
+export const TipTapDesc = ({ block }: { block: IBlock }) => {
+  const { blocks, setBlocks } = useContext(GlobalContext) as IGlobalContext;
+  const maxWords = 25;
   const [remainingWords, setRemainingWords] = useState<number>(maxWords);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleDescriptionChange = (editorContent: string) => {
     const newDescription = editorContent;
     const wordCount = newDescription.trim().split(/\s+/).filter(Boolean).length;
     const remaining = maxWords - wordCount;
-    console.log(remaining);
     setRemainingWords(remaining >= 0 ? remaining : 0);
+
+    const updatedBlocks = blocks.map((blk) =>
+      blk.id === block.id ? { ...blk, description: editorContent } : blk
+    );
+    setBlocks(updatedBlocks);
   };
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
@@ -28,25 +36,32 @@ export const TipTap = ({ block }: { block: IBlock }) => {
   }
 
   const extensions = [StarterKit, Underline];
+
   const editor = useEditor({
     extensions,
     content: block.description,
     injectCSS: true,
     editorProps: {
       attributes: {
-        class: "p-2 focus:outline font-serif text-base rounded-md",
+        class: "p-2 focus:outline-none font-serif text-base rounded-md",
       },
     },
     onUpdate({ editor }) {
-      handleDescriptionChange(editor.getHTML());
+      handleDescriptionChange(editor.getText());
     },
   });
 
   if (!editor) return null;
 
   return (
-    <Flex vertical gap={5} className="group">
-      <div className="hidden group-hover:block ">
+    <Flex
+      vertical
+      gap={5}
+      className="group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className={` ${editor.isFocused || isHovered ? "block" : "hidden"}`}>
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -83,8 +98,8 @@ export const TipTap = ({ block }: { block: IBlock }) => {
       <div>
         <EditorContent editor={editor} onKeyDown={(e) => handleKeyDown(e)} />
         <p
-          className={`hidden group-hover:block ${
-            remainingWords === 0 ? "text-red-600" : ""
+          className={`p-2 ${remainingWords === 0 ? "text-red-600" : ""} ${
+            editor.isFocused || isHovered ? "block" : "hidden"
           }`}
         >
           {remainingWords} words remaining

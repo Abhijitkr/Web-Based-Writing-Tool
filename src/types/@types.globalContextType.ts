@@ -21,13 +21,8 @@ export interface IGlobalContext {
   multiple: number;
   setMultiple: Dispatch<SetStateAction<number>>;
   isModalOpen: boolean;
-  // selectedBlock: number | null;
   setSelectedBlock: Dispatch<SetStateAction<number | null>>;
   showModal: (position: boolean) => void;
   handleOk: (createBlock: ICreateBlock) => void;
   handleCancel: () => void;
-  handleTitleChange: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => void;
 }

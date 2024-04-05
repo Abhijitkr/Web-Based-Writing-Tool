@@ -1,11 +1,12 @@
-import { Card, Flex, Input } from "antd";
+import { Card, Flex } from "antd";
 import { MdAddToPhotos, MdDragIndicator } from "react-icons/md";
 import { IBlock } from "../types/@types.block";
 import { IGlobalContext } from "../types/@types.globalContextType";
 import { GlobalContext } from "../state/GlobalContext";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Reorder, useDragControls } from "framer-motion";
-import { TipTap } from "./TipTap";
+import { TipTapDesc } from "./TipTapDesc";
+import { TipTapTitle } from "./TipTapTitle";
 
 export const TextBlock = ({
   block,
@@ -14,10 +15,9 @@ export const TextBlock = ({
   block: IBlock;
   index: number;
 }) => {
-  const { showModal, setSelectedBlock, handleTitleChange } = useContext(
+  const { showModal, setSelectedBlock } = useContext(
     GlobalContext
   ) as IGlobalContext;
-  const [editingTitle, setEditingTitle] = useState<boolean>(false);
 
   const dragControls = useDragControls();
 
@@ -29,25 +29,7 @@ export const TextBlock = ({
     >
       <Card
         key={block.id}
-        title={
-          editingTitle ? (
-            <Input
-              defaultValue={block.title}
-              onChange={(e) => handleTitleChange(e, block.id)}
-              onBlur={() => setEditingTitle(false)}
-              onPressEnter={() => setEditingTitle(false)}
-              className="border p-2"
-              placeholder="Enter title..."
-            />
-          ) : (
-            <span
-              onClick={() => setEditingTitle(true)}
-              className="cursor-pointer"
-            >
-              {block.title === "" ? "Enter title..." : block.title}
-            </span>
-          )
-        }
+        title={<TipTapTitle block={block} />}
         extra={
           <Flex align="center" gap={30} className="cursor-pointer">
             <MdAddToPhotos
@@ -67,7 +49,7 @@ export const TextBlock = ({
         }
         className="my-5 shadow-md select-none"
       >
-        <TipTap block={block} />
+        <TipTapDesc block={block} />
       </Card>
     </Reorder.Item>
   );
