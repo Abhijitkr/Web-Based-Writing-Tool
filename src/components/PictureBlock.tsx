@@ -8,7 +8,7 @@ import {
   UploadProps,
 } from "antd";
 import { GrInbox } from "react-icons/gr";
-import { MdAddToPhotos, MdDragIndicator } from "react-icons/md";
+import { MdAddToPhotos } from "react-icons/md";
 import { useContext, useState } from "react";
 import { GlobalContext } from "../state/GlobalContext";
 import { IGlobalContext } from "../types/@types.globalContextType";
@@ -59,7 +59,7 @@ export const PictureBlock = ({
   return (
     <Reorder.Item
       value={block}
-      dragListener={false}
+      // dragListener={false}
       dragControls={dragControls}
     >
       <Card
@@ -74,11 +74,11 @@ export const PictureBlock = ({
                 showModal(true);
               }}
             />
-            <MdDragIndicator
+            {/* <MdDragIndicator
               size="28"
               onPointerDown={(event) => dragControls.start(event)}
               className="cursor-grab active:cursor-grabbing"
-            />
+            /> */}
           </Flex>
         }
         className="my-5 shadow-md select-none"

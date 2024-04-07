@@ -33,7 +33,7 @@ const App: React.FC = () => {
               <ModalDefaultBlockPosition />
             </Flex>
 
-            <Reorder.Group axis="y" values={blocks} onReorder={setBlocks}>
+            <Reorder.Group axis="y" onReorder={setBlocks} values={blocks}>
               {blocks.map((block: IBlock, index: number) =>
                 block.type === "picture" ? (
                   <PictureBlock block={block} index={index} key={block.id} />

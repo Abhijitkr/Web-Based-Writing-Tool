@@ -1,5 +1,5 @@
 import { Card, Flex } from "antd";
-import { MdAddToPhotos, MdDragIndicator } from "react-icons/md";
+import { MdAddToPhotos } from "react-icons/md";
 import { IBlock } from "../types/@types.block";
 import { IGlobalContext } from "../types/@types.globalContextType";
 import { GlobalContext } from "../state/GlobalContext";
@@ -24,7 +24,7 @@ export const TextBlock = ({
   return (
     <Reorder.Item
       value={block}
-      dragListener={false}
+      // dragListener={false}
       dragControls={dragControls}
     >
       <Card
@@ -40,11 +40,11 @@ export const TextBlock = ({
               }}
             />
 
-            <MdDragIndicator
+            {/* <MdDragIndicator
               size="28"
               onPointerDown={(event) => dragControls.start(event)}
               className="cursor-grab active:cursor-grabbing"
-            />
+            /> */}
           </Flex>
         }
         className="my-5 shadow-md select-none"
