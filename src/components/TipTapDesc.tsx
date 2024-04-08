@@ -10,7 +10,7 @@ import { GlobalContext } from "../state/GlobalContext";
 
 export const TipTapDesc = ({ block }: { block: IBlock }) => {
   const { blocks, setBlocks } = useContext(GlobalContext) as IGlobalContext;
-  const maxWords = 25;
+  const maxWords = 250;
   const [remainingWords, setRemainingWords] = useState<number>(maxWords);
   const [isHovered, setIsHovered] = useState(false);
 
