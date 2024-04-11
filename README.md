@@ -2,7 +2,7 @@
 
 This project is a web-based writing tool developed as part of the assessment given by [Applyin.co](https://applyin.co/) for an internship role. The tool allows users to create and edit documents using text blocks and picture blocks in a simple and intuitive interface.
 
-## [**LIVE SITE**](https://webbasedwritingtool.netlify.app/) | [DEMO VIDEO]()
+## [**LIVE SITE**](https://webbasedwritingtool.netlify.app/) | [DEMO VIDEO](https://youtu.be/UjJ8H-ub1zc?si=VKIIsDz7l_bMBvAD)
 
 ## Features
 
@@ -78,13 +78,30 @@ The development server will start, and you can access the application by visitin
 
 ## Usage
 
-1. Navigate to the application URL in your web browser **or** setup locally using the above process.
+1. Navigate to [Web Based Writing Tool](https://webbasedwritingtool.netlify.app/) **or** setup locally using the above process.
 2. Click on the "Add Block" button to start adding content blocks to the document.
 3. Choose between text blocks or picture blocks also choose if you want to create single or multiple blocks at the same time and enter content accordingly.
 4. Rearrange or insert blocks as needed using the provided functionality.
 5. Also can add content blocks above of below the current content block.
 6. Utilize optional editing tools if enabled.
 7. Ensure responsive design by testing the tool on different screen sizes.
+
+## Challenges faced while developing the product
+
+- **Learned AntDesign**
+- **Implementing Picture adding feature**
+- **Inserting content and implement basic editors:** Explored TipTap Rich Editor.
+- **Inserting cards at any position (above/below)**
+- **Hovering and Focusing the Text content of card to show the basic tool**s
+- **Making the cards/blocks draggable:** Explored Framer Motion.
+
+## Product features that can be included as next steps
+
+- Collaborative Editing
+- Export and Import Options
+- Customizable Themes and Styling
+- Include backend/local storage to save the changes
+- Spelling and Grammar Check
 
 ## Contact
 
